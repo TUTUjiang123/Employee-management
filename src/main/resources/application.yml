@@ -1,0 +1,8 @@
+  #把我们自己写的配置文件给SpringBoot的ResourceBundle管理了起来
+spring:
+  messages:
+    basename: i18n.login
+
+  #    禁用模板引擎的缓存
+  thymeleaf:
+    cache: false
