@@ -6,3 +6,7 @@ spring:
   #    禁用模板引擎的缓存
   thymeleaf:
     cache: false
+
+  #修改默认日期格式
+  mvc:
+    date-format: yyyy-MM-dd

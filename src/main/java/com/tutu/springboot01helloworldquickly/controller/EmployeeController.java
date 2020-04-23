@@ -7,7 +7,7 @@ import com.tutu.springboot01helloworldquickly.entities.Employee;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
 
@@ -31,10 +31,45 @@ public class EmployeeController {
 
     //来到员工添加页面
     @GetMapping("/emp")
-    public String toAddPage(){
+    public String toAddPage(Model model){
         //来到添加页面,查出所有的部门，在页面显示
-//        Collection<Department> departments = departmentDao.getDepartments();
-//        model.addAttribute("depts",departments);
+        Collection<Department> departments = departmentDao.getDepartments();
+        model.addAttribute("depts",departments);
         return "emp/add";
+    }
+
+    //添加员工
+    //SpringMvc自动将请求参数和入参对象的属性进行一一绑定：要求请求参数的名字和javaBean入参的对象里面的属性名是一样的
+    @PostMapping("/emp")
+    public String addEmp(Employee employee) {
+        employeeDao.save(employee);
+        return "redirect:/emps";
+    }
+
+    //来到员工修改页面，查出当前员工，在页面回显（在页面依次取出来）
+    @GetMapping("/emp/{id}")
+    public String toEditPage(@PathVariable("id") Integer id ,Model model){
+       Employee employee = employeeDao.get(id);
+       model.addAttribute("emp",employee);
+
+        //页面要显示所有的部门列表
+        Collection<Department> departments = departmentDao.getDepartments();
+        model.addAttribute("depts",departments);
+        return "emp/add";
+    }
+
+    //修改员工
+    @PutMapping("/emp")
+    public String EditEmp(Employee employee) {
+        employeeDao.save(employee);
+        System.out.println("修改的员工数据："+employee);
+        return "redirect:/emps";
+    }
+
+    //员工删除
+    @PostMapping("/emp/{id}")
+    public String deleteEmployee(@PathVariable("id") Integer id){
+        employeeDao.delete(id);
+        return "redirect:/emps";
     }
 }
